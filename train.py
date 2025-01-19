@@ -19,6 +19,7 @@ def train_epoch(model, data_loader, optimizer, scheduler, criterion, scaler, epo
             loss = criterion(output.contiguous().view(-1, Config.vocab_size), tgt[:, 1:].contiguous().view(-1))
 
         scaler.scale(loss).backward()
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
         scaler.step(optimizer)
         scaler.update()
         scheduler.step()
