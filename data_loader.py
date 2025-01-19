@@ -16,6 +16,8 @@ class TranslationDataset(Dataset):
 
 def collate_fn(batch):
     src_batch, tgt_batch = zip(*batch)
+    src_batch = sorted(src_batch, key=lambda x: len(x), reverse=True)
+    tgt_batch = sorted(tgt_batch, key=lambda x: len(x), reverse=True)
     src_batch = pad_sequence(src_batch, padding_value=Config.pad_token_id, batch_first=True)
     tgt_batch = pad_sequence(tgt_batch, padding_value=Config.pad_token_id, batch_first=True)
     return src_batch, tgt_batch
