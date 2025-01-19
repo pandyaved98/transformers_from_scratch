@@ -13,7 +13,7 @@ class Config:
     vocab_size = 37000
     pad_token_id = 0
     attention_type = "vanilla"
-    positional_embedding = "absolute"
+    positional_embedding = "rotary"
     beam_size = 5
     length_penalty = 1.0
     use_fp16 = True
