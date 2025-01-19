@@ -18,3 +18,5 @@ class Config:
     length_penalty = 1.0
     use_fp16 = True
     use_gradient_checkpointing = True
+    sparse_window_size = 32
+    num_groups = 2
