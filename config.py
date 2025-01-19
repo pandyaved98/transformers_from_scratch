@@ -20,3 +20,4 @@ class Config:
     use_gradient_checkpointing = True
     sparse_window_size = 32
     num_groups = 2
+    use_dynamic_batching = True
