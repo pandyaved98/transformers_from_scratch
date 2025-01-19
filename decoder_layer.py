@@ -1,14 +1,22 @@
 import torch
 import torch.nn as nn
-from attention import MultiHeadAttention
+from attention import MultiHeadAttention, GroupedQueryAttention, MultiQueryAttention
 from feed_forward import FeedForward
 from config import Config
 
 class DecoderLayer(nn.Module):
     def __init__(self):
         super().__init__()
-        self.masked_attention = MultiHeadAttention()
-        self.encoder_attention = MultiHeadAttention()
+        if Config.attention_type == "grouped":
+            self.masked_attention = GroupedQueryAttention(Config.num_groups)
+            self.encoder_attention = GroupedQueryAttention(Config.num_groups)
+        elif Config.attention_type == "multi_query":
+            self.masked_attention = MultiQueryAttention()
+            self.encoder_attention = MultiQueryAttention()
+        else:
+            window_size = Config.sparse_window_size if Config.attention_type == "sparse" else None
+            self.masked_attention = MultiHeadAttention(window_size)
+            self.encoder_attention = MultiHeadAttention(window_size)
         self.feed_forward = FeedForward()
         self.norm1 = nn.LayerNorm(Config.d_model)
         self.norm2 = nn.LayerNorm(Config.d_model)
